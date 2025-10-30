@@ -1,4 +1,4 @@
 package com.arka.store_orders.infrastructure.resources.Response;
 
-public class OrderItemResponse {
+public record OrderItemShipping( Long productId, Integer quantity) {
 }

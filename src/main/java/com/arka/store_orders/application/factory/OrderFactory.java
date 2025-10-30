@@ -20,4 +20,11 @@ public class OrderFactory {
         return new Order(items);
 
     }
+    public Order createDraftOrder(OrderRequest request, UUID sagaId) {
+        List<OrderItem> items = request.items().stream()
+                .map(itemMapper::requestToDomain)
+                .toList();
+
+        return Order.createDraft(items, sagaId);
+    }
 }

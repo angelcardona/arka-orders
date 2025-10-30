@@ -53,9 +53,11 @@ public class OrderController {
         OrderResponse orderResponse=mapper.domainToResponse(useCases.deleteItem(orderId, itemId));
         return ResponseEntity.ok(orderResponse);
     }
-    @PostMapping("/accept/{orderId}")
-    public ResponseEntity<OrderResponse> acceptOrder(@PathVariable("orderId")UUID orderId){
-        OrderResponse orderResponse=mapper.domainToResponse(useCases.acceptOrder(orderId));
+    @PostMapping("/accept/{orderId}/{userId}")
+    public ResponseEntity<OrderResponse> acceptOrder(
+            @PathVariable("orderId")UUID orderId,
+            @PathVariable("userId")String userId){
+        OrderResponse orderResponse=mapper.domainToResponse(useCases.acceptOrder(orderId,userId));
         return ResponseEntity.ok(orderResponse);
     }
     @PutMapping("/cancel/{orderId}")

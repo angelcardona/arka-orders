@@ -7,18 +7,19 @@ import com.arka.store_orders.domain.models.OrderStatus;
 import com.arka.store_orders.domain.ports.in.OrderUseCases;
 import com.arka.store_orders.domain.ports.out.feignclient.PaymentPort;
 import com.arka.store_orders.domain.ports.out.feignclient.ProductPort;
+import com.arka.store_orders.domain.ports.out.feignclient.ShippingPort;
 import com.arka.store_orders.domain.ports.out.persistence.OrderPersistencePort;
 
 import com.arka.store_orders.infrastructure.exceptions.*;
 import com.arka.store_orders.infrastructure.resources.Request.ItemQuantityUpdate;
 import com.arka.store_orders.infrastructure.resources.Request.OrderRequest;
 import com.arka.store_orders.infrastructure.resources.Request.PaymentRequest;
+import com.arka.store_orders.infrastructure.resources.Request.ShippingRequest;
 import com.arka.store_orders.infrastructure.resources.Response.AvailableStockResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -29,11 +30,12 @@ import java.util.logging.Logger;
 public class OrderService implements OrderUseCases {
     private final static Logger log=Logger.getLogger(OrderService.class.getName());
 
-    private final OrderItemService itemService;
+
     private final OrderFactory orderFactory;
     private final OrderPersistencePort persistence;
     private final ProductPort productPort;
     private final PaymentPort paymentPort;
+    private final ShippingPort shippingPort;
 
     @Override
     @Transactional
@@ -133,11 +135,12 @@ public class OrderService implements OrderUseCases {
     }
 
     @Override
-    public Order acceptOrder(UUID orderId) {
+    public Order acceptOrder(UUID orderId,String userId) {
         Order acceptedOrder = getOrderById(orderId)
                 .orElseThrow(() -> new OrderNotFoundException("Order not found by ID: " + orderId));
         acceptedOrder.ensureAcceptOrder();
         acceptedOrder.switchToAccepted();
+        acceptedOrder.setUserId(userId);
         for (OrderItem item : acceptedOrder.getItems()) {
             productPort.decrementStock(item.getProductId(), item.getQuantity());
         }
@@ -189,6 +192,16 @@ public class OrderService implements OrderUseCases {
         existingOrder.calculateTotal();
         log.info("Item added to orderId: {}" + orderId);
         return persistence.save(existingOrder);
+    }
+
+    @Override
+    public void shippingOrder(UUID orderId) {
+        Order existingOrder=getOrderById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException("Order not found by ID: " + orderId));
+        existingOrder.ensureShippingOrder();
+        ShippingRequest request= new ShippingRequest(existingOrder.getId(), existingOrder.getUserId(),existingOrder.getItems());
+        shippingPort.sendOrder(request);
+
     }
 
     @Override
