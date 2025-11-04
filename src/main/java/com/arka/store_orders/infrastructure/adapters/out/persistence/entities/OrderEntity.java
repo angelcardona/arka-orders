@@ -26,4 +26,5 @@ public class OrderEntity {
     private OrderStatus status;
     private Double total;
     private LocalDateTime updateAt;
+    private String userId;
 }

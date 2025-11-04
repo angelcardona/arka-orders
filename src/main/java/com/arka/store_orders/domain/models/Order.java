@@ -58,9 +58,6 @@ public class Order {
         this.total=items.stream().mapToDouble(OrderItem::calculateAmount).sum();
     }
 
-    public void switchToShipping(){
-        this.status=OrderStatus.SHIPPING;
-    }
     public void switchToAccepted(){
         this.status=OrderStatus.ACCEPTED;
     }
@@ -69,6 +66,9 @@ public class Order {
     }
     public void switchToWaitingConfirmation(){
         this.status=OrderStatus.WAITINGCONFIRMATION;
+    }
+    public void switchToWaitingPaymentInitiation(){
+        this.status=OrderStatus.WAITING_PAYMENT_CONFIRMATION;
     }
 
 }

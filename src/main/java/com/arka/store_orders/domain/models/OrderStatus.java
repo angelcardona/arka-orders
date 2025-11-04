@@ -2,9 +2,9 @@ package com.arka.store_orders.domain.models;
 
 public enum OrderStatus {
     PENDING,
-    PROCESS,
     ACCEPTED,
+    WAITING_PAYMENT_CONFIRMATION,
     WAITINGCONFIRMATION,
     CANCELED,
-    SHIPPING
+
 }

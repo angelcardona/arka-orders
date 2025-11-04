@@ -17,8 +17,4 @@ public class PaymentWebAdapter implements PaymentPort {
         return paymentClient.processPayment(paymentRequest);
     }
 
-    @Override
-    public boolean validPayment(String transactionId) {
-        return paymentClient.validPayment(transactionId);
-    }
 }

@@ -1,6 +1,8 @@
+server:
+  port: 8080
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/orders
+    url: jdbc:postgresql://host.docker.internal:5432/orders
     username: postgres
     password: simple123
     driver-class-name: org.postgresql.Driver
@@ -9,3 +11,16 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+resilience4j:
+  retry:
+    instances:
+      paymentInitBackoffRetry:
+        maxAttempts: 4
+        waitDuration: 1000
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 2.0
+        exponentialBackoffMaxWait: 5000
+        retryExceptions:
+          - feign.FeignException
+        ignoreExceptions:
+          - com.arka.orders.exceptions.PaymentFailedException

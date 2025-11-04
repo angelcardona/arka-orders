@@ -18,7 +18,6 @@ public interface OrderUseCases {
     Order updateOrder(UUID id, Long itemId, ItemQuantityUpdate quantityUpdate);
     Order deleteItem(UUID orderId,Long itemId);
     Order addItem(UUID orderId,OrderItem item);
-    void shippingOrder(UUID orderId);
 
     Optional<Order> getOrderById(UUID id);
     List<Order> getOrders();

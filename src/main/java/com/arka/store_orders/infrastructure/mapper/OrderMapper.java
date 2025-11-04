@@ -28,6 +28,7 @@ public class OrderMapper {
         mapperOrder.setStatus(order.getStatus());
         mapperOrder.setTotal(order.getTotal());
         mapperOrder.setUpdateAt(order.getUpdateAt());
+        mapperOrder.setUserId(order.getUserId());
         return mapperOrder;
     }
     public OrderEntity orderDomainToEntity(Order order){
@@ -39,7 +40,8 @@ public class OrderMapper {
         items,
         order.getStatus(),
         order.getTotal(),
-        order.getUpdateAt()
+        order.getUpdateAt(),
+        order.getUserId()
         );
     }
     public OrderResponse domainToResponse(Order order){

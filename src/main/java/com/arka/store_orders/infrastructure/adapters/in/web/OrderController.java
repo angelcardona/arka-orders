@@ -1,7 +1,5 @@
 package com.arka.store_orders.infrastructure.adapters.in.web;
 
-import com.arka.store_orders.domain.models.Order;
-import com.arka.store_orders.domain.models.OrderItem;
 import com.arka.store_orders.domain.ports.in.OrderUseCases;
 import com.arka.store_orders.infrastructure.mapper.OrderItemMapper;
 import com.arka.store_orders.infrastructure.mapper.OrderMapper;
@@ -10,7 +8,6 @@ import com.arka.store_orders.infrastructure.resources.Request.OrderItemRequest;
 import com.arka.store_orders.infrastructure.resources.Request.OrderRequest;
 import com.arka.store_orders.infrastructure.resources.Response.OrderResponse;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
