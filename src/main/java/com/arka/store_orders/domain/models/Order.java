@@ -21,6 +21,7 @@ public class Order {
     private Double total;
     private LocalDateTime updateAt;
     private String transactionId;
+    private String userId;
 
 
     public Order( List<OrderItem> items) {
@@ -28,6 +29,8 @@ public class Order {
         this.items = items;
         this.status=OrderStatus.PENDING;
     }
+
+
     public void ensureCanModifyItems() {
         if (this.status != OrderStatus.PENDING) {
             throw new InvalidOrderStateException("Order cannot be modified. Status is: " + this.status);
@@ -43,15 +46,18 @@ public class Order {
             throw new InvalidOrderStateException("Order cannot be modified. Status is: " + this.status);
         }
     }
+    public void ensureShippingOrder() {
+        if (this.status != OrderStatus.ACCEPTED) {
+            throw new InvalidOrderStateException("Order cannot be modified. Status is: " + this.status);
+        }
+    }
     public void addItem(OrderItem item){
         this.items.add(item);
     }
     public void calculateTotal(){
         this.total=items.stream().mapToDouble(OrderItem::calculateAmount).sum();
     }
-    public void switchToProcess(){
-        this.status=OrderStatus.PROCESS;
-    }
+
     public void switchToAccepted(){
         this.status=OrderStatus.ACCEPTED;
     }
@@ -60,6 +66,9 @@ public class Order {
     }
     public void switchToWaitingConfirmation(){
         this.status=OrderStatus.WAITINGCONFIRMATION;
+    }
+    public void switchToWaitingPaymentInitiation(){
+        this.status=OrderStatus.WAITING_PAYMENT_CONFIRMATION;
     }
 
 }

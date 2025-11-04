@@ -6,5 +6,4 @@ import java.util.UUID;
 
 public interface PaymentPort {
     String processPayment(PaymentRequest paymentRequest);
-    boolean validPayment(String transactionId);
 }

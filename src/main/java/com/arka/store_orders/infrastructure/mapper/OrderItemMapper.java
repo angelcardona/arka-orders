@@ -3,6 +3,7 @@ package com.arka.store_orders.infrastructure.mapper;
 import com.arka.store_orders.domain.models.OrderItem;
 import com.arka.store_orders.infrastructure.adapters.out.persistence.entities.OrderItemEntity;
 import com.arka.store_orders.infrastructure.resources.Request.OrderItemRequest;
+import com.arka.store_orders.infrastructure.resources.Response.OrderItemShipping;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -36,6 +37,9 @@ public class OrderItemMapper {
                 null,
                 null
         );
+    }
+    public OrderItemShipping orderItemsToShipping(OrderItem orderItem){
+        return new OrderItemShipping(orderItem.getProductId(),orderItem.getQuantity());
     }
 
 }
